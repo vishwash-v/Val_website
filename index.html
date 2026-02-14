@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>For You, Hashmitha 💖</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Floating Hearts Background -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- Sparkle Particles -->
+  <div class="sparkles-container" id="sparklesContainer"></div>
+
+  <!-- ==================== FRONT PAGE ==================== -->
+  <div class="page active" id="frontPage">
+    <div class="front-content">
+      <!-- Glowing envelope animation -->
+      <div class="envelope-icon">💌</div>
+
+      <h1 class="title-name">Hashmitha</h1>
+      <p class="subtitle">I made this little world just for you...</p>
+
+      <div class="divider">
+        <span class="divider-heart">♥</span>
+      </div>
+
+      <div class="buttons-container">
+        <button class="day-button propose-btn" onclick="showQuestionPage('propose')">
+          <span class="btn-icon">💍</span>
+          <span class="btn-text">Happy Propose Day</span>
+          <span class="btn-date">Feb 8</span>
+          <div class="btn-shimmer"></div>
+        </button>
+
+        <button class="day-button promise-btn" onclick="showQuestionPage('promise')">
+          <span class="btn-icon">🤞</span>
+          <span class="btn-text">Happy Promise Day</span>
+          <span class="btn-date">Feb 11</span>
+          <div class="btn-shimmer"></div>
+        </button>
+
+        <button class="day-button kiss-btn" onclick="showQuestionPage('kiss')">
+          <span class="btn-icon">💋</span>
+          <span class="btn-text">Happy Kiss Day</span>
+          <span class="btn-date">Feb 13</span>
+          <div class="btn-shimmer"></div>
+        </button>
+      </div>
+
+      <p class="footer-text">Made with all my love ❤️</p>
+    </div>
+  </div>
+
+  <!-- ==================== QUESTION PAGES ==================== -->
+  <!-- Propose Day Question (Date Selector) -->
+  <div class="page" id="proposeQuestion">
+    <div class="question-content">
+      <div class="question-icon">💍</div>
+      <h2 class="question-title">Before you enter...</h2>
+      <p class="question-text">When did I propose you first? 💭</p>
+      <p class="date-format-hint">Select the date below</p>
+
+      <div class="date-selector-container">
+        <!-- Day -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Day</label>
+          <select class="date-select" id="proposeDay">
+            <option value="" disabled selected>DD</option>
+          </select>
+        </div>
+
+        <span class="date-separator">/</span>
+
+        <!-- Month -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Month</label>
+          <select class="date-select" id="proposeMonth">
+            <option value="" disabled selected>MM</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">Jun</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+        </div>
+
+        <span class="date-separator">/</span>
+
+        <!-- Year -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Year</label>
+          <select class="date-select" id="proposeYear">
+            <option value="" disabled selected>YY</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="submit-btn-full" onclick="checkProposeDate()">
+        <span>Check my answer 💝</span>
+      </button>
+
+      <p class="hint-text" id="proposeHint"></p>
+      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
+  </div>
+
+  <!-- Promise Day Question -->
+  <div class="page" id="promiseQuestion">
+    <div class="question-content">
+      <div class="question-icon">🤞</div>
+      <h2 class="question-title">Before you enter...</h2>
+      <p class="question-text" id="promiseQuestionText">Question will appear here</p>
+      <div class="answer-input-container">
+        <input type="text" class="answer-input" id="promiseAnswer" placeholder="Type your answer..."
+          autocomplete="off" />
+        <button class="submit-btn" onclick="checkAnswer('promise')">
+          <span>→</span>
+        </button>
+      </div>
+      <p class="hint-text" id="promiseHint"></p>
+      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
+  </div>
+
+  <!-- Kiss Day Question -->
+  <div class="page" id="kissQuestion">
+    <div class="question-content">
+      <div class="question-icon">💋</div>
+      <h2 class="question-title">Before you enter...</h2>
+      <p class="question-text" id="kissQuestionText">Question will appear here</p>
+      <div class="answer-input-container">
+        <input type="text" class="answer-input" id="kissAnswer" placeholder="Type your answer..." autocomplete="off" />
+        <button class="submit-btn" onclick="checkAnswer('kiss')">
+          <span>→</span>
+        </button>
+      </div>
+      <p class="hint-text" id="kissHint"></p>
+      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
+  </div>
+
+  <!-- ==================== DAY PAGES ==================== -->
+  <!-- Propose Day Full Page -->
+  <div class="page" id="proposePage">
+    <!-- Background music for Propose Day -->
+    <audio id="proposeMusic" loop>
+      <source src="photos,video,audio/m1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Rose petals overlay -->
+    <div class="rose-petals" id="rosePetals"></div>
+
+    <div class="propose-page-content">
+      <!-- Header -->
+      <div class="propose-header">
+        <div class="propose-emoji">💍✨</div>
+        <h2 class="propose-title">Happy Propose Day</h2>
+        <p class="propose-date-text">November 14, 2023 — The day it all began</p>
+      </div>
+
+      <!-- Music Controls -->
+      <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        <span class="music-icon" id="musicIcon">🎵</span>
+        <span class="music-text" id="musicText">Tap to play music</span>
+      </div>
+
+      <!-- Photo Slideshow (hidden initially, appears after 20s) -->
+      <div class="photo-slideshow" id="photoSlideshow">
+        <p class="slideshow-intro" id="slideshowIntro">✨ Our memories together ✨</p>
+
+        <!-- Photo 1 -->
+        <div class="slide" id="slide1">
+          <div class="photo-frame">
+            <div class="photo-glow"></div>
+            <img src="photos,video,audio/p1.jpg" alt="Our memory 1" class="gallery-photo" />
+            <div class="photo-caption">Our beautiful moment 💕</div>
+          </div>
+        </div>
+
+        <!-- Photo 2 -->
+        <div class="slide" id="slide2">
+          <div class="photo-frame">
+            <div class="photo-glow"></div>
+            <img src="photos,video,audio/p2.jpeg" alt="Our memory 2" class="gallery-photo" />
+            <div class="photo-caption">Forever &amp; always 💖</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated Love Text -->
+      <div class="love-text-container">
+        <div class="love-text-wrapper">
+          <span class="love-text" id="loveText"></span>
+          <span class="love-cursor">|</span>
+        </div>
+        <div class="love-hearts-burst" id="loveHeartsBurst"></div>
+      </div>
+
+      <!-- Back button -->
+      <button class="back-btn propose-back-btn" onclick="goBackFromPropose()">← Go Back</button>
+    </div>
+  </div>
+
+  <div class="page" id="promisePage">
+    <div class="day-page-content">
+      <div class="day-page-icon">🤞</div>
+      <h2 class="day-page-title">Happy Promise Day</h2>
+      <p class="day-page-subtitle">Content coming soon, my love...</p>
+      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
+  </div>
+
+  <div class="page" id="kissPage">
+    <div class="day-page-content">
+      <div class="day-page-icon">💋</div>
+      <h2 class="day-page-title">Happy Kiss Day</h2>
+      <p class="day-page-subtitle">Content coming soon, my love...</p>
+      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
+  </div>
+
+  <!-- Background music is now per-page, see each day page above -->
+
+  <script src="script.js"></script>
+</body>
+
+</html>
