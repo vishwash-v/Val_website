@@ -1,6 +1,5 @@
 // ===== CONFIGURATION =====
-// Propose Day: Answer is checked via date selectors (14 Nov 2023)
-// Promise & Kiss Day: Text-based answers (change below)
+// Promise Day: Text-based answer (change below)
 const dayConfig = {
   promise: {
     question: "What's our special date? 📅",
@@ -11,16 +10,6 @@ const dayConfig = {
     hintElement: 'promiseHint',
     questionPage: 'promiseQuestion',
     dayPage: 'promisePage'
-  },
-  kiss: {
-    question: "What do you call me? 💕",
-    answer: "baby",     // <-- CHANGE THIS to your real answer
-    hint: "Your sweetest nickname for me...",
-    questionElement: 'kissQuestionText',
-    answerElement: 'kissAnswer',
-    hintElement: 'kissHint',
-    questionPage: 'kissQuestion',
-    dayPage: 'kissPage'
   }
 };
 
@@ -29,12 +18,18 @@ const PROPOSE_CORRECT_DAY = 14;
 const PROPOSE_CORRECT_MONTH = 11; // November
 const PROPOSE_CORRECT_YEAR = 2023;
 
+// Kiss Day correct date
+const KISS_CORRECT_DAY = 12;
+const KISS_CORRECT_MONTH = 5; // May
+const KISS_CORRECT_YEAR = 2024;
+
 // ===== INITIALIZE =====
 document.addEventListener('DOMContentLoaded', () => {
   createFloatingHearts();
   createSparkles();
   setQuestionTexts();
   populateDateSelectors();
+  populateKissDateSelectors();
 });
 
 // ===== SET QUESTION TEXTS =====
@@ -105,6 +100,12 @@ function showPage(pageId) {
         proposePageActive = true;
         startProposePage();
       }
+
+      // If showing kiss page, start animations
+      if (pageId === 'kissPage') {
+        kissPageActive = true;
+        startKissPage();
+      }
     }
   }, 400);
 }
@@ -119,6 +120,15 @@ function showQuestionPage(day) {
     // Start music early so it plays during the question
     autoPlayMusic();
     showPage('proposeQuestion');
+  } else if (day === 'kiss') {
+    // Reset kiss date selectors
+    document.getElementById('kissDay').selectedIndex = 0;
+    document.getElementById('kissMonth').selectedIndex = 0;
+    document.getElementById('kissYear').selectedIndex = 0;
+    document.getElementById('kissHint').textContent = '';
+    // Start kiss music early
+    autoPlayKissMusic();
+    showPage('kissQuestion');
   } else {
     const config = dayConfig[day];
     if (config) {
@@ -134,8 +144,12 @@ function goBack() {
 }
 
 function goBackFromPropose() {
-  // Stop music and animations
   stopProposePage();
+  showPage('frontPage');
+}
+
+function goBackFromKiss() {
+  stopKissPage();
   showPage('frontPage');
 }
 
@@ -540,5 +554,253 @@ function createCelebrationBurst() {
     });
 
     setTimeout(() => particle.remove(), 1300);
+  }
+}
+
+// ===== KISS DAY DATE SELECTORS =====
+function populateKissDateSelectors() {
+  const daySelect = document.getElementById('kissDay');
+  const yearSelect = document.getElementById('kissYear');
+
+  // Days 1-31
+  for (let d = 1; d <= 31; d++) {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d < 10 ? '0' + d : d;
+    daySelect.appendChild(opt);
+  }
+
+  // Years 2018-2026
+  for (let y = 2018; y <= 2026; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
+}
+
+// ===== KISS DATE CHECKER =====
+function checkKissDate() {
+  const day = parseInt(document.getElementById('kissDay').value);
+  const month = parseInt(document.getElementById('kissMonth').value);
+  const year = parseInt(document.getElementById('kissYear').value);
+  const hint = document.getElementById('kissHint');
+  const container = document.querySelector('#kissQuestion .date-selector-container');
+
+  if (!day || !month || !year) {
+    hint.style.color = 'rgba(255, 100, 100, 0.8)';
+    hint.textContent = "Please select the complete date, my love 💝";
+    shakeElement(container);
+    return;
+  }
+
+  if (day === KISS_CORRECT_DAY && month === KISS_CORRECT_MONTH && year === KISS_CORRECT_YEAR) {
+    hint.style.color = 'rgba(100, 255, 150, 0.8)';
+    hint.textContent = "You remember! 🎉💋 May 12, 2024!";
+    createCelebrationBurst();
+
+    setTimeout(() => {
+      hint.style.color = '';
+      hint.textContent = '';
+      showPage('kissPage');
+    }, 1500);
+  } else {
+    hint.style.color = 'rgba(255, 100, 100, 0.8)';
+    hint.textContent = "Hmm, that's not right... Think harder! 💭";
+    shakeElement(container);
+  }
+}
+
+// ===== KISS DAY PAGE =====
+let kissPageActive = false;
+let kissTextInterval = null;
+let kissVideoTimeout = null;
+let kissMusicPlaying = false;
+const KISS_VIDEO_DELAY = 4000; // 4 seconds before video appears
+
+function startKissPage() {
+  createKissParticles();
+  startKissTextAnimation();
+
+  // Hide video initially
+  const videoSection = document.getElementById('kissVideoSection');
+  videoSection.classList.remove('visible');
+
+  // After delay, reveal video
+  kissVideoTimeout = setTimeout(() => {
+    if (!kissPageActive) return;
+    videoSection.classList.add('visible');
+    // Start playing the video
+    const video = document.getElementById('kissVideo');
+    if (video) {
+      video.currentTime = 0;
+      video.play().catch(() => { });
+    }
+  }, KISS_VIDEO_DELAY);
+}
+
+function stopKissPage() {
+  kissPageActive = false;
+
+  // Stop video timer
+  if (kissVideoTimeout) { clearTimeout(kissVideoTimeout); kissVideoTimeout = null; }
+
+  // Hide video
+  const videoSection = document.getElementById('kissVideoSection');
+  if (videoSection) videoSection.classList.remove('visible');
+
+  // Stop video
+  const video = document.getElementById('kissVideo');
+  if (video) { video.pause(); video.currentTime = 0; }
+
+  // Stop music
+  const music = document.getElementById('kissMusic');
+  if (music) { music.pause(); music.currentTime = 0; }
+
+  // Update kiss music control
+  const control = document.getElementById('kissMusicControl');
+  if (control) control.classList.remove('playing');
+  const icon = document.getElementById('kissMusicIcon');
+  if (icon) icon.textContent = '🎵';
+  const text = document.getElementById('kissMusicText');
+  if (text) text.textContent = 'Tap to play music';
+  kissMusicPlaying = false;
+
+  // Stop kiss text animation
+  if (kissTextInterval) { clearInterval(kissTextInterval); kissTextInterval = null; }
+  const kissText = document.getElementById('kissText');
+  if (kissText) kissText.textContent = '';
+
+  // Clear kiss particles
+  const particles = document.getElementById('kissParticles');
+  if (particles) particles.innerHTML = '';
+}
+
+// ===== KISS MUSIC =====
+function autoPlayKissMusic() {
+  const music = document.getElementById('kissMusic');
+  const control = document.getElementById('kissMusicControl');
+  const icon = document.getElementById('kissMusicIcon');
+  const text = document.getElementById('kissMusicText');
+
+  music.play().then(() => {
+    kissMusicPlaying = true;
+    control.classList.add('playing');
+    icon.textContent = '🎶';
+    text.textContent = 'Music playing...';
+  }).catch(() => {
+    text.textContent = 'Tap to play music';
+  });
+}
+
+function toggleKissMusic() {
+  const music = document.getElementById('kissMusic');
+  const control = document.getElementById('kissMusicControl');
+  const icon = document.getElementById('kissMusicIcon');
+  const text = document.getElementById('kissMusicText');
+
+  if (music.paused) {
+    music.play().then(() => {
+      kissMusicPlaying = true;
+      control.classList.add('playing');
+      icon.textContent = '🎶';
+      text.textContent = 'Music playing...';
+    });
+  } else {
+    music.pause();
+    kissMusicPlaying = false;
+    control.classList.remove('playing');
+    icon.textContent = '🎵';
+    text.textContent = 'Tap to play music';
+  }
+}
+
+// ===== KISS FLOATING PARTICLES =====
+function createKissParticles() {
+  const container = document.getElementById('kissParticles');
+  container.innerHTML = '';
+  const emojis = ['💋', '💕', '❤️', '💗', '💖', '😘', '🥰'];
+
+  for (let i = 0; i < 14; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'kiss-particle';
+    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.fontSize = (Math.random() * 14 + 12) + 'px';
+    particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    particle.style.animationDelay = (Math.random() * 8) + 's';
+    particle.style.opacity = Math.random() * 0.4 + 0.2;
+    container.appendChild(particle);
+  }
+}
+
+// ===== KISS TYPEWRITER TEXT =====
+function startKissTextAnimation() {
+  const kissText = document.getElementById('kissText');
+  const message = "Every kiss with you is magic..";
+  let charIndex = 0;
+  let isDeleting = false;
+  let pauseCount = 0;
+
+  if (kissTextInterval) clearInterval(kissTextInterval);
+
+  kissTextInterval = setInterval(() => {
+    if (!kissPageActive) {
+      clearInterval(kissTextInterval);
+      return;
+    }
+
+    if (!isDeleting) {
+      charIndex++;
+      kissText.textContent = message.substring(0, charIndex);
+
+      if (charIndex === message.length) {
+        pauseCount++;
+        if (pauseCount === 1) {
+          createKissHeartsBurst();
+        }
+        if (pauseCount > 20) {
+          isDeleting = true;
+          pauseCount = 0;
+        }
+      }
+    } else {
+      charIndex--;
+      kissText.textContent = message.substring(0, charIndex);
+
+      if (charIndex === 0) {
+        isDeleting = false;
+        pauseCount = 0;
+      }
+    }
+  }, 100);
+}
+
+// Hearts burst for kiss text
+function createKissHeartsBurst() {
+  const container = document.getElementById('kissHeartsBurst');
+  const hearts = ['💋', '💕', '❤️', '💗', '🥰', '✨'];
+
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement('span');
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    h.style.position = 'absolute';
+    h.style.left = '50%';
+    h.style.top = '50%';
+    h.style.fontSize = (Math.random() * 14 + 10) + 'px';
+    h.style.pointerEvents = 'none';
+    h.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    h.style.opacity = '1';
+    h.style.zIndex = '10';
+    container.appendChild(h);
+
+    requestAnimationFrame(() => {
+      const angle = (Math.PI * 2 * i) / 8;
+      const dist = Math.random() * 60 + 30;
+      h.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist - 20}px)`;
+      h.style.opacity = '0';
+    });
+
+    setTimeout(() => h.remove(), 1600);
   }
 }

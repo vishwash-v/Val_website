@@ -139,18 +139,60 @@
     </div>
   </div>
 
-  <!-- Kiss Day Question -->
+  <!-- Kiss Day Question (Date Selector) -->
   <div class="page" id="kissQuestion">
     <div class="question-content">
       <div class="question-icon">💋</div>
       <h2 class="question-title">Before you enter...</h2>
-      <p class="question-text" id="kissQuestionText">Question will appear here</p>
-      <div class="answer-input-container">
-        <input type="text" class="answer-input" id="kissAnswer" placeholder="Type your answer..." autocomplete="off" />
-        <button class="submit-btn" onclick="checkAnswer('kiss')">
-          <span>→</span>
-        </button>
+      <p class="question-text">When was our first kiss? 💭</p>
+      <p class="date-format-hint">Select the date below</p>
+
+      <div class="date-selector-container">
+        <!-- Day -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Day</label>
+          <select class="date-select" id="kissDay">
+            <option value="" disabled selected>DD</option>
+          </select>
+        </div>
+
+        <span class="date-separator">/</span>
+
+        <!-- Month -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Month</label>
+          <select class="date-select" id="kissMonth">
+            <option value="" disabled selected>MM</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">Jun</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+        </div>
+
+        <span class="date-separator">/</span>
+
+        <!-- Year -->
+        <div class="date-select-wrapper">
+          <label class="date-label">Year</label>
+          <select class="date-select" id="kissYear">
+            <option value="" disabled selected>YY</option>
+          </select>
+        </div>
       </div>
+
+      <button class="submit-btn-full" onclick="checkKissDate()">
+        <span>Check my answer 💝</span>
+      </button>
+
       <p class="hint-text" id="kissHint"></p>
       <button class="back-btn" onclick="goBack()">← Go Back</button>
     </div>
@@ -228,11 +270,55 @@
   </div>
 
   <div class="page" id="kissPage">
-    <div class="day-page-content">
-      <div class="day-page-icon">💋</div>
-      <h2 class="day-page-title">Happy Kiss Day</h2>
-      <p class="day-page-subtitle">Content coming soon, my love...</p>
-      <button class="back-btn" onclick="goBack()">← Go Back</button>
+    <!-- Background music for Kiss Day -->
+    <audio id="kissMusic" loop>
+      <source src="photos,video,audio/s2.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating kisses overlay -->
+    <div class="kiss-particles" id="kissParticles"></div>
+
+    <div class="kiss-page-content">
+      <!-- Header -->
+      <div class="kiss-header">
+        <div class="kiss-emoji">💋✨</div>
+        <h2 class="kiss-title">Happy Kiss Day</h2>
+        <p class="kiss-date-text">May 12, 2024 — A moment I'll never forget</p>
+      </div>
+
+      <!-- Music Controls -->
+      <div class="music-control" id="kissMusicControl" onclick="toggleKissMusic()">
+        <span class="music-icon" id="kissMusicIcon">🎵</span>
+        <span class="music-text" id="kissMusicText">Tap to play music</span>
+      </div>
+
+      <!-- Video Frame -->
+      <div class="kiss-video-section" id="kissVideoSection">
+        <p class="video-intro" id="videoIntro">💕 Our special moment 💕</p>
+        <div class="video-frame">
+          <div class="video-glow"></div>
+          <video id="kissVideo" class="kiss-video" loop muted playsinline>
+            <source src="photos,video,audio/v1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- Animated Kiss Text -->
+      <div class="kiss-text-container">
+        <div class="kiss-text-wrapper">
+          <span class="kiss-text" id="kissText"></span>
+          <span class="love-cursor">|</span>
+        </div>
+        <div class="kiss-hearts-burst" id="kissHeartsBurst"></div>
+      </div>
+
+      <!-- Heart pulse -->
+      <div class="heart-pulse-container">
+        <div class="heart-pulse">💖</div>
+      </div>
+
+      <!-- Back button -->
+      <button class="back-btn propose-back-btn" onclick="goBackFromKiss()">← Go Back</button>
     </div>
   </div>
 

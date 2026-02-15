@@ -1097,13 +1097,235 @@ body {
   }
 }
 
+/* ===== KISS DAY PAGE ===== */
+.kiss-page-content {
+  position: relative;
+  z-index: 2;
+  padding: 36px 20px;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kiss-header {
+  margin-bottom: 20px;
+}
+
+.kiss-emoji {
+  font-size: 48px;
+  margin-bottom: 8px;
+  animation: kissFloat 3s ease-in-out infinite;
+}
+
+@keyframes kissFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-8px) scale(1.1);
+  }
+}
+
+.kiss-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 42px;
+  color: #ff6b8a;
+  text-shadow: 0 0 20px rgba(255, 107, 138, 0.4), 0 0 40px rgba(255, 64, 129, 0.2);
+  margin: 0 0 6px;
+}
+
+.kiss-date-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 15px;
+  color: rgba(255, 180, 200, 0.7);
+  margin: 0;
+}
+
+/* Kiss Video Section */
+.kiss-video-section {
+  margin: 16px 0 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.kiss-video-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.video-intro {
+  font-family: 'Dancing Script', cursive;
+  font-size: 16px;
+  color: rgba(255, 180, 200, 0.6);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: none;
+}
+
+.kiss-video-section.visible .video-intro {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.video-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 100, 150, 0.3);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 40px rgba(255, 64, 129, 0.15), 0 0 60px rgba(255, 64, 129, 0.05);
+  animation: videoGlow 4s ease-in-out infinite;
+}
+
+@keyframes videoGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 8px 40px rgba(255, 64, 129, 0.15), 0 0 60px rgba(255, 64, 129, 0.05);
+  }
+
+  50% {
+    box-shadow: 0 8px 50px rgba(255, 64, 129, 0.25), 0 0 80px rgba(255, 64, 129, 0.1);
+  }
+}
+
+.video-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255, 64, 129, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.kiss-video {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+}
+
+/* Kiss text animation reuses love-text styles */
+.kiss-text-container {
+  position: relative;
+  margin-bottom: 20px;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.kiss-text-wrapper {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 22px;
+  background: rgba(255, 64, 129, 0.08);
+  border: 1px solid rgba(255, 64, 129, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.kiss-text {
+  font-family: 'Great Vibes', cursive;
+  font-size: 28px;
+  color: #ff7eb3;
+  text-shadow: 0 0 12px rgba(255, 126, 179, 0.3);
+}
+
+.kiss-hearts-burst {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Heart pulse */
+.heart-pulse-container {
+  margin-bottom: 20px;
+}
+
+.heart-pulse {
+  font-size: 36px;
+  animation: heartBeat 1.4s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.25);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.15);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+}
+
+/* Kiss floating particles */
+.kiss-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.kiss-particle {
+  position: absolute;
+  top: -40px;
+  font-size: 20px;
+  animation: kissFall linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+@keyframes kissFall {
+  0% {
+    transform: translateY(0) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(540deg) translateX(60px);
+    opacity: 0;
+  }
+}
+
 /* ===== SAFE AREA (notch phones) ===== */
 @supports (padding-top: env(safe-area-inset-top)) {
 
   .front-content,
   .question-content,
   .day-page-content,
-  .propose-page-content {
+  .propose-page-content,
+  .kiss-page-content {
     padding-top: calc(36px + env(safe-area-inset-top));
     padding-bottom: calc(36px + env(safe-area-inset-bottom));
   }
